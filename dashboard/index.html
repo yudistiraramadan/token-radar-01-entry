@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>Token Launch Radar</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="hdr">
+<div>
+<div class="bt">TOKEN LAUNCH RADAR<span class="dot">●</span></div>
+<div class="bm">snapshot <span id="m-asof">—</span> · <span id="m-pre">—</span> pre-token candidates · <span id="m-comp">—</span> priced comparables · <code>mcap ≈ <span id="m-scale">—</span> × tvl<sup id="m-b">—</sup></code> with per-category shrinkage, R²=<span id="m-r2">—</span></div>
+</div>
+<div class="hr">
+<div class="stat"><span class="stv" id="rows-shown">0</span><span>rows</span></div>
+<div class="stat"><span class="stv pos-text" id="m-watch">0</span><span>★ watchlist</span></div>
+<button class="tb" id="theme-toggle" type="button" title="Toggle theme">☾ Dark</button>
+</div>
+</header>
+<div class="filters">
+<input class="search" id="search" placeholder="search slug or name" autocomplete="off" aria-label="Search protocols">
+<div class="chips" id="chips" role="group" aria-label="Filter by category"></div>
+<div class="si">sort: <b id="sort-label">implied ▼</b></div>
+</div>
+<table class="board">
+<thead><tr>
+<th data-k="rank" class="right narrow">#</th>
+<th data-k="name" class="left">NAME</th>
+<th data-k="category" class="left">CATEGORY</th>
+<th data-k="tvl_usd" class="right">TVL</th>
+<th data-k="change_7d" class="right">7D</th>
+<th data-k="age" class="right">AGE</th>
+<th data-k="implied_value_usd" class="right on">IMPLIED</th>
+</tr></thead>
+<tbody id="body"></tbody>
+</table>
+<p class="empty" id="empty" hidden>No protocol matches this filter.</p>
+<footer class="foot">
+<h3>Methodology</h3>
+<p><b>Implied value</b> = <code>size</code> × <code>growth</code> × <code>maturity</code>: what this protocol's token would be worth if it launched with today's record. Every number derives from the snapshot's own TVL, 7-day change and listing age — no hardcoded protocol names. Click any row for its breakdown and farm plan.</p>
+<p>• <b>Size</b> fits an overall log-log curve on the <b id="f-comp">—</b> protocols whose token already trades (gecko_id, symbol and mcap recorded): <code>mcap = <span id="f-scale">—</span> × tvl<sup id="f-b">—</sup></code> (R²=<span id="f-r2">—</span>). Per-category multipliers are the median mcap/curve ratio, shrunk toward 1.0 by sample weight n/(n+5), for categories with 3+ comparables: <span id="f-cats">—</span>. Output clipped to [<span id="f-lo">—</span>×TVL, <span id="f-hi">—</span>×TVL], the empirical p10–p90 band.</p>
+<p>• <b>Growth</b>: <code>clip(1 + 2·change_7d/100, 0.5, 2.0)</code> — amplifies 7-day TVL momentum, capped to prevent outliers. No reported change ×1.0.</p>
+<p>• <b>Maturity</b>: step function by days since DefiLlama <code>listed_at</code>. Young (&lt;90d) ×0.6, proving (&lt;1y) ×0.9, <b class="pos-text">sweet spot (1–2y) ×1.1</b>, mature (2–4y) ×1.0, stale (&gt;4y) ×0.85. Null <code>listed_at</code> ×0.95.</p>
+<p>• <b>Live vs pre-token</b>: protocols whose token already trades price the curve and are never ranked. The board holds all <b id="f-watch">—</b> watchlist protocols (★, TVL ≥ <span id="f-floor">—</span>, no token recorded) plus the top <b id="f-extras">—</b> of <span id="f-pool">—</span> other pre-token protocols that pass the watchlist's own cleanliness rule (no CEX, Bridge, Liquid Staking, wrapped, staked or versioned names), ranked descending by implied value.</p>
+<p>• <b>Farm plan</b>: five steps per protocol — three for its category (venue, deposit size by TVL tier, costs and lock times), then a 60-day hold and a −15% 7-day TVL exit rule.</p>
+<p>Snapshot is read-only: <code>as_of <span id="f-asof">—</span></code>, source <span id="f-src">—</span>. Implied values are this radar's claim from DefiLlama's record, not a forecast that any token will launch; a protocol here records no token, which is not proof it has none.</p>
+</footer>
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+# Build output
+out/
+dist/
+*.log
+
+# Secrets (never commit)
+.env
+.env.*
+!.env.example
+*.keypair.json
+
+# Development-only reference files (not part of entry)
+BUILD-SPEC.md
+board-preview.json
+dashboard-monolithic-preview.html
+.makefun/owner.json.template
+
+# OS
+.DS_Store
+Thumbs.db
